@@ -10,6 +10,16 @@ export default {
       checked: false,
     };
   },
+  methods: {
+    onClickNext() {
+      if (this.level === 2) {
+        window.close();
+        return;
+      }
+      if (this.checked)
+        this.level += 1;
+    },
+  }
 };
 </script>
 
@@ -62,7 +72,10 @@ export default {
         </div>
       </div>
     </div>
-    <div class="index__agree">
+    <div
+      class="index__agree"
+      v-if="level === 0"
+    >
       <h1 class="index__agree-title">
         <span>1단계</span>
         이용약관 동의
@@ -109,11 +122,74 @@ export default {
       </div>
     </div>
     <div
+      class="index__second"
+      v-if="level === 1"
+    >
+      <h1 class="index__second-title">
+        <span>2단계</span>
+        카드 선택
+      </h1>
+      <div class="index__cards">
+        <img
+          class="index__card"
+          :src="require('../assets/card.png')"
+        />
+        <select class="index__select">
+          <option>SW은행 - 테스트</option>
+        </select>
+        <div class="index__table">
+          <div class="index__table-row">
+            <span>은행</span>
+            <span>SW은행</span>
+          </div>
+          <div class="index__table-row">
+            <span>카드번호</span>
+            <span>4000-20**-****-0000</span>
+          </div>
+          <div class="index__table-row">
+            <span>CVC</span>
+            <span>2**</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="index__second"
+      v-if="level === 2"
+    >
+      <h1 class="index__second-title">
+        <span>3단계</span>
+        결제 완료
+      </h1>
+      <div class="index__bye">
+        결제가 완료되었습니다.
+      </div>
+      <div class="index__table">
+        <div class="index__table-row">
+          <span>금액</span>
+          <span>{{ price.toLocaleString() }}</span>
+        </div>
+        <div class="index__table-row">
+          <span>상품명</span>
+          <span>{{ product }}</span>
+        </div>
+        <div class="index__table-row">
+          <span>결제처</span>
+          <span>수시레시피</span>
+        </div>
+        <div class="index__table-row">
+          <span>카드번호</span>
+          <span>4000-20**-****-0000</span>
+        </div>
+      </div>
+    </div>
+    <div
       ref="button"
       class="index__button"
       :class="{ 'ok' : (checked) }"
+      @click="onClickNext()"
     >
-      다음으로
+      {{ (level != 2) ? '다음으로' : '닫기' }}
     </div>
   </div>
 </template>
@@ -203,11 +279,13 @@ export default {
     color: rgba(255, 255, 255, 0.5);
   }
 
-  &__agree {
+  &__agree,
+  &__second {
     margin: 0.5rem 0.8rem;
   }
 
-  &__agree-title {
+  &__agree-title,
+  &__second-title {
     font-size: 1.5rem;
 
     span {
@@ -272,6 +350,61 @@ export default {
       background-color: #0575e6;
       cursor: pointer;
     }
+  }
+
+  &__cards {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  &__card {
+    width: 80%;
+    margin: auto;
+  }
+
+  &__select {
+    width: 90%;
+    margin: auto;
+    margin-top: 1rem;
+  }
+
+  &__table {
+    border: 1px solid #0575e6;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+    margin-top: 0.5rem;
+    text-align: left;
+  }
+
+  &__table-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.1rem 0.3rem;
+    font-weight: 400;
+
+    span:first-child {
+      color: #0575e6;
+    }
+
+    span:last-child {
+      color: #021b79;
+    }
+  }
+
+  &__bye {
+    font-size: 1.3rem;
+    color: #0575e6;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 }
 </style>
