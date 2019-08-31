@@ -4,11 +4,15 @@ export default {
   name: 'index',
   data() {
     return {
-      product: '멘토 질문권 5회',
-      price: 1000,
+      product: '',
+      price: 0,
       level: 0,
       checked: false,
     };
+  },
+  mounted() {
+    this.product = this.$route.params.product;
+    this.price = Number(this.$route.params.price);
   },
   methods: {
     onClickNext() {
